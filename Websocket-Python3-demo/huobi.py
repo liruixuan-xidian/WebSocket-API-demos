@@ -48,6 +48,6 @@ if __name__ == '__main__':
         else:
             print(result)
             if result['tick']:
-                db.auto.insert(result)
+                db.auto.insert(result['tick'])
 
     
