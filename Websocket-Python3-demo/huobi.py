@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 #author: 半熟的韭菜
 from websocket import create_connection
+from pymongo import MongoClient
 import gzip
 import time
 
@@ -34,7 +35,9 @@ if __name__ == '__main__':
 
     #请求 Market Detail 数据
     # tradeStr="""{"req": "market.ethusdt.detail", "id": "id12"}"""
-    client = MongoClient('mongodb://ds137611.mlab.com:37611/huobi')
+    #client = MongoClient('mongodb://ds137611.mlab.com:37611/huobi')
+    client = MongoClient('mongodb://localhost:27017/')
+    
     db = client.example
     ws.send(tradeStr)
     while(1):
@@ -46,9 +49,11 @@ if __name__ == '__main__':
             ws.send(pong)
             ws.send(tradeStr)
         else:
-            print(result)
-            eval(result)
-            if result['tick']:
-                db.auto.insert(result['tick'])
+            result = eval(result)
+            if 'tick' in result.keys():
+                data = result['tick']['data'][:]
+                data['id'] = str(data['id'])
+                print(data)
+                db.auto.insert(data)
 
     
