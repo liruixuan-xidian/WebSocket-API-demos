@@ -47,6 +47,7 @@ if __name__ == '__main__':
             ws.send(tradeStr)
         else:
             print(result)
+            eval(result)
             if result['tick']:
                 db.auto.insert(result['tick'])
 
