@@ -50,10 +50,10 @@ if __name__ == '__main__':
             ws.send(tradeStr)
         else:
             result = eval(result)
-            if 'tick' in result.keys():
-                data = result['tick']['data'][:]
-                data['id'] = str(data['id'])
+            if 'tick' in result.keys() and 'data' in result['tick'].keys():
+                data = result['tick']['data'][0]
                 print(data)
+                data['id'] = str(data['id'])
                 db.auto.insert(data)
 
     
